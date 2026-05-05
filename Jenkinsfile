@@ -16,7 +16,7 @@ pipeline {
 
     environment {
         DOCKER_HUB_USER = 'kbsanchai'
-        KUBECONFIG = '/var/lib/jenkins/.kube/config'
+        KUBECONFIG = '/home/jenkins/.jenkins/.kube/config'
         BLUE_IMAGE = "${DOCKER_HUB_USER}/blue-app"
         GREEN_IMAGE = "${DOCKER_HUB_USER}/green-app"
     }
