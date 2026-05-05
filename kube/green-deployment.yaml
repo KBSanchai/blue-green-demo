@@ -1,0 +1,41 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: app-green
+  namespace: default
+  labels:
+    app: demo-app
+    slot: green
+    version: "2.0.0"
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: demo-app
+      slot: green
+  template:
+    metadata:
+      labels:
+        app: demo-app
+        slot: green
+        version: "2.0.0"
+    spec:
+      containers:
+      - name: app
+        image: <DOCKERHUB_USER>/green-app:latest
+        ports:
+        - containerPort: 3000
+        env:
+        - name: APP_COLOR
+          value: green
+        resources:
+          requests: { memory: "64Mi", cpu: "100m" }
+          limits: { memory: "128Mi", cpu: "250m" }
+        livenessProbe:
+          httpGet: { path: /health, port: 3000 }
+          initialDelaySeconds: 30
+          periodSeconds: 10
+        readinessProbe:
+          httpGet: { path: /health, port: 3000 }
+          initialDelaySeconds: 5
+          periodSeconds: 5
