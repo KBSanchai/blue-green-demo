@@ -61,10 +61,12 @@ pipeline {
         stage('Deploy Blue') {
             steps {
                 echo 'Deploying Blue to Kubernetes...'
+                sh "kubectl apply -f kube/service.yaml --kubeconfig=${KUBECONFIG}"  // ← add this
                 sh "kubectl apply -f kube/blue-deployment.yaml --kubeconfig=${KUBECONFIG}"
                 sh "kubectl set image deployment/app-blue app=${BLUE_IMAGE}:${BUILD_NUMBER} --kubeconfig=${KUBECONFIG}"
                 sh "kubectl rollout status deployment/app-blue --timeout=120s --kubeconfig=${KUBECONFIG}"
-            }
+    }
+}
         }
 
         stage('Deploy Green') {
